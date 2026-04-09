@@ -6,9 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class InstaBot:
     def __init__(self, username, pw):
-        self.username = username
-        self.pw = pw
-
         self.driver = webdriver.Chrome()
         self.wait = WebDriverWait(self.driver, 7)
 
@@ -27,7 +24,7 @@ class InstaBot:
     def get_unfollowers(self):
         sleep(1)
         print('open personal profile')
-        self.driver.find_element_by_xpath(f"//a[contains(@href,'/{self.username}')]").click()
+        self.driver.find_element_by_xpath(f"//a[contains(@href,'/{self.driver.find_element_by_xpath('//input[@name=\"username\"]').get_attribute('value')}')]").click()
         self.is_element_exist("//a[contains(@href,'/following')]")
         print('opening following tab')
         self.driver.find_element_by_xpath("//a[contains(@href,'/following')]").click()
